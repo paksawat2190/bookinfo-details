@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}
-  namespace: {{ .Values.details.namespace}}
+  namespace: {{ .Values.details.namespace }}
   labels:
     app: {{ .Release.Name }}
 spec:
@@ -17,29 +17,28 @@ spec:
     spec:
       containers:
       - name: {{ .Release.Name }}
-        image: {{ .Values.details.image}}:{{ .Values.details.tag}}
+        image: {{ .Values.details.image }}:{{ .Values.details.tag }}
         imagePullPolicy: Always
         ports:
-        - containerPort: {{ .Values.details.port}}
+        - containerPort: {{ .Values.details.port }}
           name: web-port
           protocol: TCP
         livenessProbe:
           httpGet:
-            path: {{ .Values.details.healthCheckPath}}
-            port: {{ .Values.details.port}}
+            path: {{ .Values.details.healthCheckPath }}
+            port: {{ .Values.details.port }}
             scheme: HTTP
         readinessProbe:
           httpGet:
-            path: {{ .Values.details.healthCheckPath}}
-            port: {{ .Values.details.port}}
+            path: {{ .Values.details.healthCheckPath }}
+            port: {{ .Values.details.port }}
             scheme: HTTP
-        {{- if .Values.extraEnv }}
+          {{- if .Values.extraEnv }}
         env:
         {{- range $key, $value := .Values.extraEnv }}
         - name: {{ $key }}
           value: {{ $value | quote }}
         {{- end }}
         {{- end }}
-
       imagePullSecrets:
-      - name: {{ .Values.details.imagePullSecrets}}
+      - name: {{ .Values.details.imagePullSecrets }}
